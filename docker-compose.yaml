@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  local-network:
+    driver: bridge
+
+services:
+  gremlin-server:
+    image: "tinkerpop/gremlin-server"
+    restart: always
+    ports:
+      - 8182:8182
+    networks:
+      - local-network
+  gremlin-visualizer:
+    image: "prabushitha/gremlin-visualizer"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - ./docker/postgres-data-sts:/var/lib/postgresql/data
+    ports:
+      - 3000:3000
+      - 3001:3001
+    networks:
+      - local-network
