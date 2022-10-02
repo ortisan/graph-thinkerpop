@@ -1,4 +1,4 @@
-# Graphs Demo with Thinkerpop
+# Graphs Demo with Tinkerpop
 
 ## Start
 
