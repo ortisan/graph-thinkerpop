@@ -36,3 +36,20 @@ Configuring gremlin-console to reach docker container of gremlin-server:
     :remote connect tinkerpop.server conf/remote-docker.yaml
     :remote console
     ```
+## Queries:
+```sh
+g.V().has("states","type","state").out().count()
+g.V().has("states","type","state").sum()
+g.V().has("states","type","state").values("received_date")
+g.V().has("type","state").as('a').
+      out().as('b').
+      select('a','b').
+        by(values("id_payment", 'received_date').fold())
+
+g.V().has("type","state").as('a').out().as('b').math('b - a').by('received_date').index().
+      unfold()
+
+g.V().has("type","state").
+  bothE().
+  where(__.otherV().has("type","state"))
+```
