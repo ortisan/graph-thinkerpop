@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "graph-study"
+name = "graph-tinkerpop"
 version = "0.1.0"
 description = ""
 authors = ["Marcelo Ortiz de Santana <tentativafc@gmail.com>"]

@@ -31,25 +31,30 @@ Configuring gremlin-console to reach docker container of gremlin-server:
     ```
 - Start gremlin-console:
     ```sh
-    docker run-ti tentativafc/gremlin-console
+    docker run -ti tentativafc/gremlin-console
     # Connects to remote server
     :remote connect tinkerpop.server conf/remote-docker.yaml
     :remote console
     ```
 ## Queries:
+
+### Properties?
+
+```sh
+g.V().has("states","type","state").values()
+g.V().has("states","type","state").valueMap().unfold()
+```
+
+### Grouping
+
+```sh
+g.V().groupCount().by(label)
+```
+
 ```sh
 g.V().has("states","type","state").out().count()
 g.V().has("states","type","state").sum()
 g.V().has("states","type","state").values("received_date")
-g.V().has("type","state").as('a').
-      out().as('b').
-      select('a','b').
-        by(values("id_payment", 'received_date').fold())
-
-g.V().has("type","state").as('a').out().as('b').math('b - a').by('received_date').index().
-      unfold()
-
-g.V().has("type","state").
-  bothE().
-  where(__.otherV().has("type","state"))
+# Get all transition states and calculate the difference between received dates  
+g.V().has("type","state").as("a").out().as("b").union(select("a","b"), math("b - a").by("received_date").as("diff")).fold()
 ```

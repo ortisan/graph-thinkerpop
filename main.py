@@ -1,5 +1,6 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
+
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from gremlin_python.process.anonymous_traversal import traversal
 
@@ -19,7 +20,7 @@ if __name__ == "__main__":
         g.addV("states")
         .property("type", "state")
         .property("state", "starting_paid")
-        .property("received_date", datetime.timestamp(datetime.now()))
+        .property("received_date", (datetime.now() - timedelta(days=2)).timestamp())
         .property("id_payment", id)
         .next()
     )
@@ -28,7 +29,7 @@ if __name__ == "__main__":
         g.addV("states")
         .property("type", "state")
         .property("state", "waiting_authorization")
-        .property("received_date", datetime.timestamp(datetime.now()))
+        .property("received_date", (datetime.now() - timedelta(days=1)).timestamp())
         .property("id_payment", id)
         .next()
     )
