@@ -38,11 +38,26 @@ Configuring gremlin-console to reach docker container of gremlin-server:
     ```
 ## Queries:
 
+
+### Basic
+
+```sh
+g.V().hasLabel('states')
+# Find all vertex that has not any edgre
+g.V().has("states","type","state").not(bothE())
+```
+
 ### Properties?
 
 ```sh
 g.V().has("states","type","state").values()
 g.V().has("states","type","state").valueMap().unfold()
+```
+
+### Repeating
+
+```sh
+g.V().has("states","type","state").repeat(out()).until(has("states","state","paid"))
 ```
 
 ### Grouping
@@ -57,4 +72,7 @@ g.V().has("states","type","state").sum()
 g.V().has("states","type","state").values("received_date")
 # Get all transition states and calculate the difference between received dates  
 g.V().has("type","state").as("a").out().as("b").union(select("a","b"), math("b - a").by("received_date").as("diff")).fold()
+
+# Mean time for paid flow
+g.V().has("states","type","state").as("a").repeat(out()).until(has("states","state","paid")).as("b").math("b - a").by("received_date").mean()
 ```
